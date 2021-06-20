@@ -1,5 +1,6 @@
 import random
 from higher_lower.data import data
+from higher_lower.design import logo, vs
 
 count = 0
 end_game = False
@@ -7,12 +8,15 @@ end_game = False
 lst = [random.choice(data)]
 lst.append(random.choice(data))
 
+print(logo)
+
 def game_over():
     global count, end_game, lst
     option1 = lst[0]
     option2 = lst[1]
 
     print(f"Compare A :{option1['name']} , {option1['description']} from {option1['country']}" )
+    print("\t",vs)
     print(f"Compare B :{option2['name']} , {option2['description']} from {option2['country']}" )
     choice = input("Who has more followers Type 'A' or 'B")
     if choice == 'A' and option1['follower_count'] > option2['follower_count']:
