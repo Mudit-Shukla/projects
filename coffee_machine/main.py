@@ -8,14 +8,19 @@ def check_resource_availability(choice):
         if resources[item] < MENU[choice]["ingredients"][item]:
             print(f"Sorry {choice} is not available at the moment")
             return False
+    for item in resources:
+        resources[item] -= MENU[choice]["ingredients"][item]
     return True
 
 def make_payment(choice):
+    global profit
     amount_made = float(input(f"Please Deposit {MENU[choice]['cost']}"))
     amount_made = round(amount_made, 2)
     if amount_made >= MENU[choice]['cost']:
         print(f"You have deposited Rs {amount_made} and Rs {amount_made - MENU[choice]['cost']} has been refunded")
         print(f"Enjoy your {choice}")
+        profit += MENU[choice]['cost']
+
         return True
     else:
         print(f"You have deposited Rs {amount_made} less than {MENU[choice]['cost']}. The amount has been refunded")
