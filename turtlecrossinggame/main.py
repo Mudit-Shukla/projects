@@ -23,6 +23,7 @@ while game_is_on:
     car.move_cars()
     for each_car in car.all_cars:
         if each_car.distance(player) < 20:
+            scoreboard.end_game()
             game_is_on = False
     if player.ycor() >= 280:
         car.increase_speed()
