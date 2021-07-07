@@ -32,5 +32,8 @@ password = ""
 for char in password_list:
   password += char
 
+def get_password():
+    return password
+
 print(f"Your password is: {password}")
 
