@@ -1,6 +1,24 @@
 from tkinter import *
 from tkinter import messagebox
 import password_generator
+import json
+
+
+#----------------------------- SEARCH DATA -------------------------------#
+
+def search_password():
+    website = website_entry.get()
+    email = ""
+    password = ""
+    with open("data.json", 'r') as file:
+        data = json.load(file)
+        if website in data:
+            messagebox.showinfo("Details", f"These are the requested details\n "
+                                           f"website: {website}\n"
+                                           f"email: {data[website]['email']}\n"
+                                           f"password: {data[website]['password']}")
+        else:
+            messagebox.showinfo("Result","Requested details not available")
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
@@ -13,19 +31,34 @@ def get_password():
 
 def save_password():
 
-    if len(website_entry.get()) == 0 or len(password_entry.get()) == 0 or len(email_entry.get()) == 0:
+    website = website_entry.get()
+    password = password_entry.get()
+    email = email_entry.get()
+
+    new_data = {website : {"email" : email, "password" : password}}
+
+    if len(website) == 0 or len(password) == 0 or len(email) == 0:
         messagebox.showinfo("Derails Missing", "please enter all details")
         return
     confirmation = messagebox.askokcancel("Confirm saveing password", f"Your details are \n "
-                                                       f"Website: {website_entry.get()}\n"
-                                                       f"Email: {email_entry.get()}\n "
-                                                        f"Password: {password_entry.get()}\n "
+                                                       f"Website: {website}\n"
+                                                       f"Email: {email}\n "
+                                                        f"Password: {password}\n "
                                                        f"Press OK to confirm")
     if confirmation:
-        with open("data.txt", "a") as file:
-            file.write(f"{website_entry.get()} | {email_entry.get()} | {password_entry.get()}")
-            file.write("\n")
-        clear_feilds()
+        try:
+            with open("data.json", "r") as data:
+                old_data = json.load(data)
+        except FileNotFoundError:
+            with open("data.json", "w") as data:
+                json.dump(new_data, data, indent = 4)
+        else:
+            old_data.update(new_data)
+            with open ("data.json", "w") as data:
+                json.dump(old_data, data, indent=4)
+        finally:
+            website_entry.delete(0, END)
+            password_entry.delete(0, END)
 
 def clear_feilds():
     website_entry.delete(0, END)
@@ -53,12 +86,12 @@ password_label = Label(text="Password:")
 password_label.grid(row=3, column=0)
 
 #Entries
-website_entry = Entry(width=35)
+website_entry = Entry(width = 35)
 website_entry.focus()
 website_entry.grid(row=1, column=1, columnspan=2)
-email_entry = Entry(width=35)
+email_entry = Entry(width = 35)
 email_entry.grid(row=2, column=1, columnspan=2)
-password_entry = Entry(width=21)
+password_entry = Entry()
 password_entry.grid(row=3, column=1)
 
 # Buttons
@@ -66,5 +99,7 @@ generate_password_button = Button(text="Generate Password", command = get_passwo
 generate_password_button.grid(row=3, column=2)
 add_button = Button(text="Add", width=36, command=save_password)
 add_button.grid(row=4, column=1, columnspan=2)
+search_button = Button(text="Search", command = search_password)
+search_button.grid(row=1, column=2)
 
 window.mainloop()
