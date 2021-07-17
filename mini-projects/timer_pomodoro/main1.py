@@ -51,7 +51,7 @@ label_timer = Label(text = "Timer")
 label_timer.config(font = (FONT_NAME,30, "bold"), fg = GREEN, bg = YELLOW)
 label_timer.grid(row = 0,column = 1)
 
-timer_image = PhotoImage(file = "tomato.png")
+timer_image = PhotoImage(file ="tomato.png")
 canvas = Canvas(width= 200, height = 224, bg = YELLOW, highlightthickness = 0)
 
 canvas.create_image((100,112), image = timer_image)
