@@ -7,7 +7,7 @@ from spotipy.oauth2 import SpotifyOAuth
 
 
 year = input("Which year you want to go, Enter in YYYY-MM-DD format")
-URL =  "https://www.billboard.com/charts/hot-100"
+URL =  "https://www.billboard.com/charts/hot-100" + f"/{year}"
 
 CLIENT_SECRET = "98d14c5c7eb14853bb27f04204ea0753"
 CLIENT_ID = "8ebd53a2a5504dd590f0d9a605a645cc"
@@ -25,7 +25,6 @@ spotifyObject = spotipy.Spotify(
 )
 
 user_id = spotifyObject.current_user()["id"]
-print(user_id)
 
 playlist_name = input("Enter playlist name: ")
 playlist_description = input("Enter playlist description: ")
@@ -49,7 +48,6 @@ for song in songs_list:
 
 
 list_of_playlist = spotifyObject.user_playlists(user = user_id)
-print((list_of_playlist))
 
 required_playlist = (list_of_playlist["items"][0]["id"])
 
